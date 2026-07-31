@@ -1,0 +1,74 @@
+{
+  
+  "welcome_title": "Welcome to Tutorio!!!",
+  "welcome_subtitle": "Pick your native language below to customize your menus and dashboard text. Don't worry—the actual SAT practice questions will stay in English to match the real exam.",
+  "continue_btn": "Continue",
+  "finish_setup_btn": "Finish Setup",
+  "pick_lang_snack": "Pick a language first!",
+  "fill_choices_snack": "Please fill out all the choices!",
+  "error_snack": "Something went wrong, try again!",
+
+  "setup_title": "Set Up Your Profile",
+  "setup_subtitle": "Let's customize the TUTORIO to match your LEARNING.",
+  "choose_option_hint": "Choose option...",
+
+  "current_grade_label": "Current Grade",
+  "current_grade_sub": "What year are you in?",
+  "school_system_label": "School System",
+  "school_system_sub": "Which school system do you follow?",
+  "country_label": "Where are you from?",
+  "country_sub": "Select your country",
+  "learning_style_label": "Learning Style",
+  "learning_style_sub": "How do you prefer studying?",
+  "daily_goal_label": "Daily Goal",
+  "daily_goal_sub": "How long can you practice per day?",
+  "target_score_label": "Target SAT Score",
+  "target_score_sub": "What score are you aiming for?",
+
+  "grade_class_9": "Class 9",
+  "grade_class_10": "Class 10",
+  "grade_class_11": "Class 11",
+  "grade_class_12": "Class 12",
+  "grade_gap_year": "GAP year",
+
+  "school_neb": "NEB (Nepal)",
+  "school_ib": "IB (International Baccalaureate)",
+  "school_cbse": "CBSE (India)",
+  "school_icse": "ICSE / ISC (India)",
+  "school_cambridge": "Cambridge / A-Levels",
+  "school_us_diploma": "US Diploma / AP",
+  "school_bise": "BISE (Pakistan Matric/FSc)",
+  "school_bangladesh": "Board of Education (Bangladesh)",
+  "school_french": "French Baccalauréat",
+  "school_australia": "ATAR / HSC (Australia)",
+  "school_arab": "Thanawiya Amma (Arab National)",
+  "school_vietnam": "National Curriculum (Vietnam)",
+  "school_waec": "WAEC / WASSCE (West Africa)",
+  "school_other": "Other / Private Curriculum",
+
+  "style_practical": "Practical / Applied format",
+  "style_theory": "Deep understanding / Theory",
+  "style_visual": "Visual / Diagrams",
+  "style_step": "Step-by-Step Process",
+
+  "pace_15_mins": "15 mins / day",
+  "pace_30_mins": "30 mins / day",
+  "pace_45_mins": "45 mins / day",
+  "pace_1_hour": "1 hour / day",
+
+  "score_1200_1300": "1200-1300",
+  "score_1300_1400": "1300-1400",
+  "score_1400_1500": "1400-1500",
+  "score_1500_1600": "1500-1600",
+
+  "home_nav": "Home",
+  "leaderboard_nav": "Leaderboard",
+  "test_nav": "Test",
+  "profile_nav": "Profile",
+
+  "greeting_morning": "Welcome and Good morning",
+  "greeting_afternoon": "Welcome and Good afternoon",
+  "greeting_evening": "Welcome and Good evening",
+
+  "sat_goal_sub": "Are you ready to achieve your SAT goals?"
+}

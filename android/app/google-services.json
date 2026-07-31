@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "750793925254",
+    "project_id": "sat-prep-app-e2837",
+    "storage_bucket": "sat-prep-app-e2837.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:750793925254:android:d64918e979c225fe8e6707",
+        "android_client_info": {
+          "package_name": "com.SATtutor.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "750793925254-tksaq2sm2t9lb316h1vu371fosvqgmjo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzEssNQKin_tBlqUnC3fAJfHCA4Wy0t9Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "750793925254-tksaq2sm2t9lb316h1vu371fosvqgmjo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "750793925254-1e5kus7souoniflmu1j8bhhvru51108d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.satPrepApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:750793925254:android:2fdd10001d6778d78e6707",
+        "android_client_info": {
+          "package_name": "com.example.sat_prep_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "750793925254-gukd2vkmb3u93gd5fotg1m69l049gds6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sat_prep_app",
+            "certificate_hash": "1172dbd5379a41cedf480ec78d987f4605c6bab6"
+          }
+        },
+        {
+          "client_id": "750793925254-tksaq2sm2t9lb316h1vu371fosvqgmjo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzEssNQKin_tBlqUnC3fAJfHCA4Wy0t9Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "750793925254-tksaq2sm2t9lb316h1vu371fosvqgmjo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "750793925254-1e5kus7souoniflmu1j8bhhvru51108d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.satPrepApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
