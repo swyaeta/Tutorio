@@ -1,5 +1,5 @@
 ### TUTORIO:
-A customized SAT preparation learning system built with Flutter,Firebase,firestore and dart (under active development)
+A context aware SAT preparation learning system/app built with Flutter,Firebase,firestore and dart (under active development)
 
 
 
