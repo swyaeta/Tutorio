@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'login_screen.dart';
+import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -11,23 +13,33 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
-  late AnimationController fadeController;
-  late Animation<double> fadeAnim;
+  late AnimationController _fadeController;
+  late Animation<double> _fadeAnimation;
 
   @override
   void initState() {
     super.initState();
 
-    fadeController = AnimationController(
+    _fadeController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1500),
+      duration: const Duration(milliseconds: 1400),
     );
 
-    fadeAnim = Tween<double>(begin: 0.0, end: 1.0).animate(fadeController);
-    fadeController.forward();
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(_fadeController);
+    _fadeController.forward();
 
+    
     Timer(const Duration(seconds: 3), () {
-      if (mounted) {
+      if (!mounted) return;
+
+      final currentUser = FirebaseAuth.instance.currentUser;
+
+      if (currentUser != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
+        );
+      } else {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (_) => const LoginScreen()),
@@ -38,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   void dispose() {
-    fadeController.dispose();
+    _fadeController.dispose();
     super.dispose();
   }
 
@@ -51,7 +63,7 @@ class _SplashScreenState extends State<SplashScreen>
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             FadeTransition(
-              opacity: fadeAnim,
+              opacity: _fadeAnimation,
               child: Image.asset(
                 'assets/logo.png',
                 width: 240,
@@ -61,13 +73,13 @@ class _SplashScreenState extends State<SplashScreen>
             ),
             const SizedBox(height: 40),
             FadeTransition(
-              opacity: fadeAnim,
+              opacity: _fadeAnimation,
               child: SizedBox(
                 width: 160,
                 child: Column(
                   children: [
                     const Text(
-                      'LOADING...',
+                      'LOADINGG...',
                       style: TextStyle(
                         color: Color(0xFF64748B),
                         fontSize: 13,

@@ -88,7 +88,6 @@ class _SetupScreenState extends State<SetupScreen> {
     {'name': 'Tagalog', 'flag': '🇵🇭', 'code': 'tl'},
     {'name': 'French', 'flag': '🇫🇷', 'code': 'fr'},
     {'name': 'German', 'flag': '🇩🇪', 'code': 'de'},
-    {'name': 'Hausa', 'flag': '🇳🇬', 'code': 'ha'},
     {'name': 'Hindi', 'flag': '🇮🇳', 'code': 'hi'},
     {'name': 'Indonesian', 'flag': '🇮🇩', 'code': 'id'},
     {'name': 'Italian', 'flag': '🇮🇹', 'code': 'it'},
@@ -282,7 +281,7 @@ class _SetupScreenState extends State<SetupScreen> {
                         child: Text(
                           '2',
                           style: TextStyle(
-                            color: currentStep == 2 ? Colors.white : Colors.grey,
+                            color: currentStep == 2 ? Colors.white : const Color(0xFF334155),
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
                           ),
@@ -338,7 +337,7 @@ class _SetupScreenState extends State<SetupScreen> {
           const SizedBox(height: 12),
           Text(
             'welcome_subtitle'.tr(),
-            style: const TextStyle(fontSize: 14, color: Color(0xFF64748B), height: 1.4),
+            style: const TextStyle(fontSize: 14, color: Color(0xFF334155), height: 1.4),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 28),
@@ -409,12 +408,12 @@ class _SetupScreenState extends State<SetupScreen> {
         children: [
           Text(
             'setup_title'.tr(),
-            style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
           ),
           const SizedBox(height: 6),
           Text(
             'setup_subtitle'.tr(),
-            style: const TextStyle(color: Colors.grey),
+            style: const TextStyle(color: Color(0xFF334155), fontSize: 14),
           ),
           const SizedBox(height: 24),
           buildDropdown('current_grade_label'.tr(), 'current_grade_sub'.tr(), grades, gradeLevel, (v) => setState(() => gradeLevel = v)),
@@ -442,13 +441,13 @@ class _SetupScreenState extends State<SetupScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+            Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Color(0xFF1E293B))),
             const SizedBox(height: 2),
-            Text(hint, style: const TextStyle(color: Color(0xFF64748B), fontSize: 12)),
+            Text(hint, style: const TextStyle(color: Color(0xFF475569), fontSize: 12)),
             const SizedBox(height: 8),
             DropdownButtonFormField<String>(
               initialValue: value,
-              hint: Text('choose_option_hint'.tr(), style: const TextStyle(fontSize: 14)),
+              hint: Text('choose_option_hint'.tr(), style: const TextStyle(fontSize: 14, color: Color.fromARGB(255, 242, 244, 247))),
               decoration: InputDecoration(
                 fillColor: const Color(0xFFF8FAFC),
                 filled: true,
@@ -462,7 +461,7 @@ class _SetupScreenState extends State<SetupScreen> {
                 final displayText = countries.contains(e) ? e : e.tr();
                 return DropdownMenuItem(
                   value: e, 
-                  child: Text(displayText, style: const TextStyle(fontSize: 14)),
+                  child: Text(displayText, style: const TextStyle(fontSize: 14, color: Color(0xFF1E293B))),
                 );
               }).toList(),
               onChanged: onChanged,

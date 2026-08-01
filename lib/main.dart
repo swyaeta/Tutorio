@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart'; // Powered by your FlutterFire CLI setup
+import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'screen/login_screen.dart';
@@ -11,7 +12,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   
-  
+  // FORCE system navigation and status bar to stay hidden globally from startup
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -21,7 +24,7 @@ void main() async {
       path: 'assets/translations',
       supportedLocales: const [
         Locale('ar'), Locale('bn'), Locale('nl'), Locale('en'),
-        Locale('tl'), Locale('fr'), Locale('de'), Locale('ha'),
+        Locale('tl'), Locale('fr'), Locale('de'), 
         Locale('hi'), Locale('id'), Locale('it'), Locale('ja'),
         Locale('ko'), Locale('ms'), Locale('zh'), Locale('ne'),
         Locale('fa'), Locale('pl'), Locale('pt'), Locale('ur'),
@@ -50,7 +53,6 @@ class MyApp extends StatelessWidget {
       ],
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      
       
       themeMode: ThemeMode.system,
       theme: ThemeData(

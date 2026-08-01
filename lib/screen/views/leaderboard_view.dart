@@ -62,13 +62,16 @@ class LeaderboardView extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final userMap = filteredUsers[index];
                         final name = userMap['displayName'] ?? userMap['displayname'] ?? "Anonymous Learner";
-                        final score = userMap['highestScore'] ?? 0;
-                        final rank = allUsers.indexOf(filteredUsers[index]) + 1;
+                        final score = userMap['score'] ?? userMap['highestScore'] ?? 0;
+                        
+                        // Find true rank safely from master allUsers list
+                        final masterIndex = allUsers.indexOf(userMap);
+                        final displayRank = masterIndex >= 0 ? masterIndex + 1 : (index + 1);
 
                         Color rankColor = const Color(0xFF94A3B8);
-                        if (rank == 1) rankColor = Colors.amber;
-                        if (rank == 2) rankColor = const Color(0xFFC0C0C0);
-                        if (rank == 3) rankColor = const Color(0xFFCD7F32);
+                        if (displayRank == 1) rankColor = Colors.amber;
+                        if (displayRank == 2) rankColor = const Color(0xFFC0C0C0);
+                        if (displayRank == 3) rankColor = const Color(0xFFCD7F32);
 
                         return Card(
                           color: const Color(0xFF1A1632),
@@ -77,7 +80,7 @@ class LeaderboardView extends StatelessWidget {
                           child: ListTile(
                             leading: CircleAvatar(
                               backgroundColor: rankColor.withValues(alpha: 0.2),
-                              child: Text("#$rank", style: TextStyle(color: rankColor, fontWeight: FontWeight.bold)),
+                              child: Text("#$displayRank", style: TextStyle(color: rankColor, fontWeight: FontWeight.bold)),
                             ),
                             title: Text(name, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
                             subtitle: Text(
@@ -91,7 +94,7 @@ class LeaderboardView extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: Text(
-                                "$score ${'pts'.tr()}",
+                                "$score / 1600",
                                 style: const TextStyle(color: Colors.amberAccent, fontWeight: FontWeight.bold),
                               ),
                             ),

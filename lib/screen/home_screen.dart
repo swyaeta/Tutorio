@@ -7,8 +7,7 @@ import 'setup_screen.dart';
 import 'views/leaderboard_view.dart';
 import 'views/test_view.dart';
 import 'views/profile_view.dart';
-
-// for diff modules for math and english
+ // for diff english and math modules
 import 'math_module1.dart';
 import 'math_module2.dart';
 import 'english_module1.dart';
@@ -26,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bool _isLoadingProfile = true;
   Map<String, dynamic>? _userProfile;
+  Map<String, dynamic>? _topScorerProfile;
   int _activeTabIndex = 0;
 
   @override
@@ -44,13 +44,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
     try {
       final prefs = await SharedPreferences.getInstance();
+      await prefs.reload();
+      
       final bool isSetupComplete = prefs.getBool('setupComplete') ?? false;
 
       if (!isSetupComplete) {
         _redirectToSetup();
         return;
       }
-
+      // this is for our options 
       final profileData = {
         'educationLevel': prefs.getString('educationLevel') ?? '',
         'educationSystem': prefs.getString('educationSystem') ?? '',
@@ -90,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
       MaterialPageRoute(builder: (_) => const SetupScreen()),
     );
   }
-
+  // this is for greeting the user acc to their timeline
   String _greetingPrefix() {
     final hour = DateTime.now().hour;
     if (hour < 12) return 'greeting_morning'.tr();
@@ -100,6 +102,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoadingProfile) {
+      return Scaffold(
+        backgroundColor: const Color(0xFFF8FAFC),
+        body: const Center(
+          child: CircularProgressIndicator(
+            color: Color(0xFF2563EB),
+            strokeWidth: 2.5,
+          ),
+        ),
+      );
+    }
+
     final List<Widget> tabPages = [
       _buildDashboardTab(),
       LeaderboardView(
@@ -112,69 +126,86 @@ class _HomeScreenState extends State<HomeScreen> {
       ProfileView(profile: _userProfile),
     ];
 
-    return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
-      body: SafeArea(
-        child: _isLoadingProfile
-            ? const Center(
-                child: CircularProgressIndicator(
-                  color: Color(0xFF2563EB),
-                  strokeWidth: 2.5,
-                ),
-              )
-            : tabPages[_activeTabIndex],
-      ),
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          border: Border(top: BorderSide(color: Color(0xFFF1F5F9), width: 1.0)),
+    return Container(
+      color: const Color(0xFFF8FAFC),
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF8FAFC),
+        resizeToAvoidBottomInset: false,
+        body: IndexedStack(
+          index: _activeTabIndex,
+          children: tabPages.map((page) {
+            return Navigator(
+              onGenerateRoute: (settings) {
+                return MaterialPageRoute(
+                  builder: (context) => page,
+                );
+              },
+            );
+          }).toList(),
         ),
-        child: BottomNavigationBar(
-          currentIndex: _activeTabIndex,
-          backgroundColor: Colors.white,
-          selectedItemColor: const Color(0xFF2563EB),
-          unselectedItemColor: const Color(0xFF94A3B8),
-          elevation: 0,
-          type: BottomNavigationBarType.fixed,
-          selectedFontSize: 11,
-          unselectedFontSize: 11,
-          selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w700),
-          unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500),
-          onTap: (index) => setState(() => _activeTabIndex = index),
-          items: [
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.grid_view_rounded),
-              label: 'home_nav'.tr(),
+        bottomNavigationBar: MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.0)),
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              border: Border(top: BorderSide(color: Color(0xFFF1F5F9), width: 1.0)),
             ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.bar_chart_rounded),
-              label: 'leaderboard_nav'.tr(),
+            child: SafeArea(
+              top: false,
+              bottom: true,
+              child: BottomNavigationBar(
+                currentIndex: _activeTabIndex,
+                backgroundColor: Colors.white,
+                selectedItemColor: const Color(0xFF2563EB),
+                unselectedItemColor: const Color(0xFF94A3B8),
+                elevation: 0,
+                type: BottomNavigationBarType.fixed,
+                selectedFontSize: 11,
+                unselectedFontSize: 11,
+                selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w700),
+                unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500),
+                onTap: (index) => setState(() => _activeTabIndex = index),
+                items: [
+                  BottomNavigationBarItem(
+                    icon: const Icon(Icons.grid_view_rounded),
+                    label: 'home_nav'.tr(),
+                  ),
+                  BottomNavigationBarItem(
+                    icon: const Icon(Icons.bar_chart_rounded),
+                    label: 'leaderboard_nav'.tr(),
+                  ),
+                  BottomNavigationBarItem(
+                    icon: const Icon(Icons.assignment_rounded),
+                    label: 'test_nav'.tr(),
+                  ),
+                  BottomNavigationBarItem(
+                    icon: const Icon(Icons.person_outline_rounded),
+                    label: 'profile_nav'.tr(),
+                  ),
+                ],
+              ),
             ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.assignment_rounded),
-              label: 'test_nav'.tr(),
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.person_outline_rounded),
-              label: 'profile_nav'.tr(),
-            ),
-          ],
+          ),
         ),
       ),
     );
   }
-
+ // this for our leaderboard and it shows who got the highest score of the day
   Widget _buildDashboardTab() {
-    final userName = _auth.currentUser?.displayName ??
-        _auth.currentUser?.email?.split('@').first ??
+    final currentUser = _auth.currentUser;
+    final userName = currentUser?.displayName ??
+        currentUser?.email?.split('@').first ??
         "Learner";
+    final String? userPhotoUrl = currentUser?.photoURL;
 
-    const Color defaultAccent = Color(0xFF2563EB);
-    const Color defaultBadgeBg = Color(0xFFEFF6FF);
+    final String heroName = _topScorerProfile?['userName'] ?? "No Scorer Today";
+    final String? heroPhotoUrl = _topScorerProfile?['photoUrl'] ?? userPhotoUrl;
+    final dynamic rawScore = _topScorerProfile?['score'] ?? 0;
+    final String heroScoreText = rawScore == 0 ? "0" : "$rawScore";
 
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
-      padding: const EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 40.0),
+      padding: const EdgeInsets.fromLTRB(20.0, 40.0, 20.0, 100.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -226,56 +257,63 @@ class _HomeScreenState extends State<HomeScreen> {
                     CircleAvatar(
                       radius: 28,
                       backgroundColor: Colors.white.withValues(alpha: 0.2),
-                      child: Text(
-                        userName.isNotEmpty ? userName[0].toUpperCase() : 'L',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                      ),
+                      backgroundImage: (heroPhotoUrl != null && heroPhotoUrl.isNotEmpty)
+                          ? NetworkImage(heroPhotoUrl)
+                          : null,
+                      child: (heroPhotoUrl == null || heroPhotoUrl.isEmpty)
+                          ? Text(
+                              heroName.isNotEmpty && heroName != "No Scorer Today"
+                                  ? heroName[0].toUpperCase()
+                                  : 'N',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            )
+                          : null,
                     ),
                     const SizedBox(width: 16),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Ready to Practice?",
-                            style: TextStyle(
+                          Text(
+                            heroName,
+                            style: const TextStyle(
                               fontSize: 18,
                               color: Colors.white,
                               fontWeight: FontWeight.w800,
                             ),
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            "Target: ${_userProfile?['targetSatScore'] ?? '1400+'}",
+                          const SizedBox(height: 2),
+                          const Text(
+                            "Highest score of the day",
                             style: TextStyle(
                               fontSize: 13,
-                              color: Colors.white.withValues(alpha: 0.85),
+                              color: Colors.white70,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                         ],
                       ),
                     ),
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          "SAT",
-                          style: TextStyle(
+                          heroScoreText,
+                          style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w900,
                             color: Colors.white,
                             letterSpacing: -0.5,
                           ),
                         ),
-                        Text(
-                          "Ready",
+                        const Text(
+                          "out of 1600",
                           style: TextStyle(
-                            fontSize: 12,
+                            fontSize: 11,
                             fontWeight: FontWeight.w600,
                             color: Color(0xFF93C5FD),
                           ),
@@ -288,47 +326,49 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           const SizedBox(height: 48),
-
+         // this is for my first math module
           Row(
             children: [
               Expanded(
                 child: SizedBox(
-                  height: 240, 
+                  height: 240,
                   child: _buildModuleTile(
                     categoryTag: "MATH:",
-                    icon: Icons.functions_rounded, 
+                    icon: Icons.functions_rounded,
                     title: "Module 1",
                     subtitle: "Algebra & Linear Functions",
-                    accentColor: defaultAccent,
-                    badgeBgColor: defaultBadgeBg,
+                    accentColor: const Color(0xFF2563EB),
+                    badgeBgColor: const Color(0xFFEFF6FF),
                     onTap: () => _navigateToModule(const MathModule1()),
                   ),
                 ),
               ),
+              // this for my second math module
               const SizedBox(width: 14),
               Expanded(
                 child: SizedBox(
                   height: 240,
                   child: _buildModuleTile(
                     categoryTag: "MATH:",
-                    icon: Icons.square_foot_rounded, 
+                    icon: Icons.square_foot_rounded,
                     title: "Module 2",
                     subtitle: "Geometry & Advanced Math",
-                    accentColor: defaultAccent,
-                    badgeBgColor: defaultBadgeBg,
+                    accentColor: const Color(0xFF2563EB),
+                    badgeBgColor: const Color(0xFFEFF6FF),
                     onTap: () => _navigateToModule(const MathModule2()),
                   ),
                 ),
               ),
             ],
           ),
+          // this is for my first english module
           const SizedBox(height: 20),
 
           Row(
             children: [
               Expanded(
                 child: SizedBox(
-                  height: 240, 
+                  height: 240,
                   child: _buildModuleTile(
                     categoryTag: "READING & WRITING",
                     icon: Icons.auto_stories_rounded,
@@ -340,10 +380,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
+              // this is for my second english module
               const SizedBox(width: 14),
               Expanded(
                 child: SizedBox(
-                  height: 240, 
+                  height: 240,
                   child: _buildModuleTile(
                     categoryTag: "READING & WRITING",
                     icon: Icons.edit_note_rounded,

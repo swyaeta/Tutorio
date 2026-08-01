@@ -170,7 +170,7 @@ class _ProfileViewState extends State<ProfileView> {
                   items: languages.map((lang) {
                     return DropdownMenuItem<String>(
                       value: lang['name'],
-                      child: Text('${lang['flag']}   ${lang['name']?.tr()}'),
+                      child: Text('${lang['flag']}   ${lang['name']}'), // Fixed: Removed .tr() from plain text name
                     );
                   }).toList(),
                   onChanged: (selectedName) {
